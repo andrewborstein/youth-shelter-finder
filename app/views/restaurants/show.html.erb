@@ -2,7 +2,7 @@
 <p><em><%= @restaurant.description %></em></p>
 <p><%= @restaurant.address %> </p>
 <p><%= @restaurant.phone %> </p>
-<p><img src="<%= @gmap %>"></p>
+<p><%= gmap([@restaurant]) %></p>
 
 <%= link_to "Edit", edit_restaurant_path(@restaurant) %> | 
 <%= link_to "View All Restaurants", restaurants_path %>

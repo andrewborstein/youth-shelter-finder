@@ -4,11 +4,6 @@ class RestaurantsController < ApplicationController
 
   def index
     @restaurants = Restaurant.all
-    @gmaps_addresses = ''
-    @restaurants.each do |restaurant|
-      @gmaps_addresses << 'markers='+restaurant.address.gsub(' ', '+')+'&'
-      gmap_markers(restaurant.address)
-    end
   end
 
   def show

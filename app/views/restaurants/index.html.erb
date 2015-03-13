@@ -22,7 +22,7 @@
 
 <div>
   <h3>All restaurants, on a map </h3>
-  <img src="<%= @gmap_markers %>">
+  <%= gmap(@restaurants) %>
 </div>
 
 <p><%= link_to "Add Restaurant", new_restaurant_path %></p>
