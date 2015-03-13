@@ -1,0 +1,11 @@
+<%= form_for @restaurant do |f| %>
+    <% @restaurant.errors.full_messages.each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  <p>Name: <%= f.text_field :name %></p>
+  <p>Description: <%= f.text_field :description %></p>
+  <p>Address: <%= f.text_field :address %></p>
+  <p>Phone: <%= f.text_field :phone %></p>
+
+  <p><%= f.submit %></p>
+<% end %>
