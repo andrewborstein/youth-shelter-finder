@@ -1,8 +1,13 @@
-<h1><%= @restaurant.name %> </h1>
+<h1>
+  <%= @restaurant.name %>  
+  <%= link_to "Edit", edit_restaurant_path(@restaurant), class: 'btn btn-default' %> 
+  <%= link_to "Delete", restaurant_path(@restaurant), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-default' %> 
+</h1>
 <p><em><%= @restaurant.description %></em></p>
 <p><%= @restaurant.address %> </p>
 <p><%= @restaurant.phone %> </p>
 <p><%= gmap([@restaurant]) %></p>
 
-<%= link_to "Edit", edit_restaurant_path(@restaurant) %> | 
-<%= link_to "View All Restaurants", restaurants_path %>
+<p>
+  <%= link_to "Back to Restaurants Index", restaurants_path, class: 'btn btn-primary', 'data-no-turbolink' => true %>
+</p>

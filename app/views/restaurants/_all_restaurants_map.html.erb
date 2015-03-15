@@ -1,0 +1,85 @@
+<script type="text/javascript">
+
+jQuery(function($) {
+    // Asynchronously Load the map API 
+    var script = document.createElement('script');
+    script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyBIez1GM_iyBa6nvMkd93F3bi-nYTzssO4&sensor=false&callback=initialize";
+    document.body.appendChild(script);
+});
+
+
+function initialize() {
+
+  var geocoder;
+  var map;
+  var markersArray = [];
+  var bounds;
+  var infowindow =  new google.maps.InfoWindow({
+      content: ''
+  });
+
+  function initialize() {
+    geocoder = new google.maps.Geocoder();
+    bounds = new google.maps.LatLngBounds ();
+
+    var myOptions = {
+      zoom: 2, 
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      navigationControlOptions: {
+          style: google.maps.NavigationControlStyle.SMALL
+      }
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions); // Attach gmap to #map_canvas
+
+    plotMarkers();
+    }
+
+    // Retrieve restaurants info (array of arrays - printed by rails, hidden with css)
+    var addresses = document.getElementById('restaurants_info').innerHTML; // Find #all_info and get its contents
+    locationsArray = JSON.parse(addresses); // Create array with this info
+
+    function plotMarkers(){      
+      for( i in locationsArray ){ // For each restaurant in the restaurants array...
+          codeAddresses(locationsArray[i]); // Create function to retrieve its info
+      }
+    }
+
+    function codeAddresses(restaurant){
+      geocoder.geocode( { 'address': restaurant[2]}, function(results, status) { 
+        if (status == google.maps.GeocoderStatus.OK) {
+          marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location,
+            animation: google.maps.Animation.DROP,
+          });
+
+          google.maps.event.addListener(marker, 'click', function() {
+            var name = restaurant[0],
+                desc = restaurant[1],
+                addr = restaurant[2],
+                phone = restaurant[3],
+                allInfo = '<h4 style="margin: 0 0 5px;">'+name+'</h4>'+
+                          '<em>'+desc+'</em>'+
+                          '<p>'+addr+'<br>'+
+                          phone+'</p>'
+            infowindow.setContent(allInfo);
+            infowindow.open(map, this);
+          });
+
+          bounds.extend(results[0].geometry.location);
+
+          markersArray.push(marker); 
+        }
+        else{
+          alert("Geocode was not successful for the following reason: " + status);
+        }
+
+        map.fitBounds(bounds);
+      });
+  }
+
+  google.maps.event.addDomListener(window, 'load', initialize);
+    
+}
+
+</script>

@@ -1,5 +1,8 @@
-<h1>Restaurants</h1>
-<table>
+<h1>
+  Restaurants
+  <%= link_to "Add Restaurant", new_restaurant_path, class: 'btn btn-primary' %>
+</h1>
+<table class="table table-striped">
   <tr>
     <th>Name</th>
     <th>Description</th>
@@ -8,21 +11,28 @@
   </tr>
   <% @restaurants.each do |restaurant| %>
     <tr>
-      <td><%= restaurant.name %></td>
+      <td><strong><%= link_to restaurant.name, restaurant %></strong></td>
       <td><%= restaurant.description %></td>
       <td><%= restaurant.address %></td>
       <td><%= restaurant.phone %></td>
-      <td><%= link_to "Show", restaurant %></td>
-      <td><%= link_to "Edit", edit_restaurant_path(restaurant) %></td>
-      <td><%= link_to "Delete", restaurant, data: { confirm: "Are you sure?" }, method: :delete %></td>
     </tr>
   <% end %>
 
 </table>
 
 <div>
-  <h3>All restaurants, on a map </h3>
-  <%= gmap(@restaurants) %>
+  <h3>Locations <br><small class="muted">(click to view more info)</small></h3>
 </div>
 
-<p><%= link_to "Add Restaurant", new_restaurant_path %></p>
+<div id='js_data' class='hide'>
+  <div id='names'><%= names(@restaurants) %></div>
+  <div id='addresses'><%= addresses(@restaurants) %></div>
+  <div id='restaurants_info'><%= restaurants_info(@restaurants) %></div>
+</div>
+
+
+<div id="map_wrapper">
+    <div id="map_canvas" class="mapping"></div>
+</div>
+
+<%= render partial: 'all_restaurants_map' %>

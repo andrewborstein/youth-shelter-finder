@@ -2,15 +2,23 @@
 <html>
 <head>
   <title>RestaurantApp</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %> 
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<%= flash[:notice] %>
 
-<%= yield %>
+<div class="container">
+  <% flash.each do |name, msg| %>
+    <div class='alert alert-info text-center alert-dismissible' role="alert">
+      <strong><%= name.capitalize %>:</strong> <span><%= msg %></span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+  <% end %>
+  <%= yield %>
+</div>
 
 </body>
 </html>
