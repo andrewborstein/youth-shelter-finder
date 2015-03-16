@@ -34,6 +34,13 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 gem 'bootstrap-sass'
+gem 'devise'
+gem "paperclip"
+gem 'aws-sdk'
+gem 'masonry-rails'
+gem 'font-awesome-rails'
+gem 'will_paginate'
+gem 'will_paginate-bootstrap'
 
 
 group :development, :test do
@@ -48,6 +55,9 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  # Use rspec for testing in development
+  gem 'rspec'
 end
 
 group :production do
