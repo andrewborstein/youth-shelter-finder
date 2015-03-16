@@ -18,7 +18,7 @@ class RestaurantsController < ApplicationController
   def create
     @restaurant = Restaurant.new(restaurant_params)
     if @restaurant.save
-      flash[:notice] = "'#{@restaurant.name}' was successfully created."
+      flash[:success] = "'#{@restaurant.name}' was successfully created."
       redirect_to @restaurant
     else
       render action: 'new'
@@ -32,7 +32,7 @@ class RestaurantsController < ApplicationController
   def update
     @restaurant = Restaurant.find(params[:id])
     if @restaurant.update_attributes(restaurant_params)
-      flash[:notice] = "'#{@restaurant.name}' was successfully edited."
+      flash[:success] = "'#{@restaurant.name}' was successfully edited."
       redirect_to @restaurant
     else
       render action: 'edit'
@@ -42,7 +42,7 @@ class RestaurantsController < ApplicationController
   def destroy
     @restaurant = Restaurant.find(params[:id])
     @restaurant.destroy
-    redirect_to restaurants_path, notice: "'#{@restaurant.name}' was successfully deleted."
+    redirect_to restaurants_path, success: "'#{@restaurant.name}' was successfully deleted."
   end
 
   def gmap(value)
