@@ -4,6 +4,10 @@ class RestaurantsController < ApplicationController
 
   def index
     @restaurants = Restaurant.all
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @restaurants }
+    end
   end
 
   def show

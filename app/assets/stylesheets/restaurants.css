@@ -7,6 +7,9 @@
 body {
   font-family: 'Open Sans'
 }
+a {
+  cursor: pointer;
+}
 #map_wrapper {
     height: 400px;
     background: url(ajax-loader.gif) no-repeat center center;
