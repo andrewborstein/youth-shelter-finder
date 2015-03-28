@@ -29,9 +29,10 @@ function restaurants() {
       restaurants = xhr; // Create 'restaurants' array from JSON response
       initialize(); // Start the 'initialize' function for google maps
   })
-  .fail( function( xhr, textStatus, errorThrown ) {
-    alert(xhr.responseText);
-    alert(textStatus);
+  .fail( function( response, textStatus, errorThrown ) {
+    console.log(response);
+    console.log(textStatus);
+    console.log(errorThrown);
   });
 };
 
