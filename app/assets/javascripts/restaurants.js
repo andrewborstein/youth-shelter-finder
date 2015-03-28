@@ -9,7 +9,9 @@
  *
  */
 
-ready = function() {
+$(document).ready(ready);           //calls for the function we defined above (first loading)
+
+function ready() {
   var script  = document.createElement('script');
   script.type = 'text/javascript';
   script.src  = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBIez1GM_iyBa6nvMkd93F3bi-nYTzssO4&sensor=false&callback=restaurants';
