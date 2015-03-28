@@ -23,7 +23,7 @@ function restaurants() {
   $.ajax({
       type: "GET",
       accept: 'application/json',
-      url: 'http://localhost:3000/restaurants.json',
+      url: 'restaurants.json',
   })
     .done(function( xhr, textStatus, response ) {
       restaurants = xhr; // Create 'restaurants' array from JSON response
