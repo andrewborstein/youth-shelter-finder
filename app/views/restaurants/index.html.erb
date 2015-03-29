@@ -9,6 +9,8 @@
     <th>Description</th>
     <th>Address</th>
     <th>Phone</th>
+    <th>Guest Gender</th>
+    <th>Free Beds*</th>
     <th>Map</th>
   </tr>
   <% @restaurants.each do |restaurant| %>
@@ -17,6 +19,8 @@
       <td><%= restaurant.description %></td>
       <td><%= restaurant.address %></td>
       <td><%= restaurant.phone %></td>
+      <td><%= restaurant.gender %></td>
+      <td><%= restaurant.free_bed %></td>
       <td><span class="distance"></span> mi</td>
       <td><a class="view-on-map" onclick="showMarker()" data-info="" data-marker="">View on map</a></td>
     </tr>
