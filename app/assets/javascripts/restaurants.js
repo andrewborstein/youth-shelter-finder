@@ -9,12 +9,12 @@
  *
  */
 
-$(document).ready(ready);           //calls for the function we defined above (first loading)
+$(document).ready(ready);  //calls the 'ready' function
 
 function ready() {
   var script  = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBIez1GM_iyBa6nvMkd93F3bi-nYTzssO4&sensor=false&callback=restaurants';
+  script.src  = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBIez1GM_iyBa6nvMkd93F3bi-nYTzssO4&sensor=false&libraries=geometry&callback=restaurants';
     document.body.appendChild(script);
 };
 
@@ -36,19 +36,68 @@ function restaurants() {
   });
 };
 
+
 // Set global variable array for use in showMarker() function
 var gmarkers  = [];
 var map       = null;
+var GeoMarker = null;
 var latArray  = [];
 var lngArray  = [];
+var userLoc   = null;
 
 function initialize() {
-  
+
+  // Try HTML5 geolocation
+  if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = new google.maps.LatLng(position.coords.latitude,
+                                       position.coords.longitude);
+
+      var infowindow = new google.maps.InfoWindow({
+        map: map,
+        position: pos,
+        content: '<h3>Location pinned from HTML5 Geolocation!</h3>' +
+                    '<h5>Coordinates: ' + pos + '</h5>' 
+      });
+
+      userLoc = pos; // Assign current position to variable
+
+      map.setCenter(pos);
+    }, function() {
+      handleNoGeolocation(true);
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleNoGeolocation(false);
+  }
+
+  function handleNoGeolocation(errorFlag) {
+    if (errorFlag) {
+      var content = 'Error: The Geolocation service failed.';
+    } else {
+      var content = 'Error: Your browser doesn\'t support geolocation.';
+    }
+
+    var options = {
+      map: map,
+      position: new google.maps.LatLng(60, 105),
+      content: content
+    };
+
+    var infowindow = new google.maps.InfoWindow(options);
+    map.setCenter(options.position);
+  }
+
+
+
+
   // Set global Google Maps variables
   var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP }
   var geocoder = new google.maps.Geocoder();
   var bounds = new google.maps.LatLngBounds ();
-  var infowindow = new google.maps.InfoWindow();
+  var infowindow = new google.maps.InfoWindow({
+    disableAutoPan: true
+  });
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
   // Loop through locations...
@@ -128,9 +177,19 @@ function initialize() {
 // Show a marker using 'onclick attribute'
 function showMarker(id) {
   google.maps.event.trigger(gmarkers[id],'click'); // Show infoWindow
-  var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); // Get lat/lng of marker
-  map.panTo(latLng); // Pan to marker on map
   if (map.getZoom() < 15) { // Set zoom level, if not already zoomed in
     map.setZoom(15);
   }
+  var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); // Get lat/lng of marker
+  map.panTo(latLng); // Pan to marker on map
+  console.log(userLoc)
+  console.log(latLng)
+  var dist = google.maps.geometry.spherical.computeDistanceBetween (userLoc, latLng);
+  function getMiles(i) {
+    var conversion = i*0.000621371192
+    var twoDecimal = parseFloat(conversion).toFixed(2);
+    return twoDecimal;
+  }
+  var distMiles = getMiles(dist);
+  console.log(distMiles)
 }
