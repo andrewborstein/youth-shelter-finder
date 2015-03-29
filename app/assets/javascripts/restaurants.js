@@ -88,6 +88,7 @@ function initialize() {
 
           gmarkers.push(marker); // Add markers to array, to use for showMarker() function
 
+          // Create latitude and longitude arrays, for panning map inside showMarker() function
           var lat = marker.position.k;
           var lng = marker.position.D;
           latArray.push(lat)
@@ -126,10 +127,10 @@ function initialize() {
 
 // Show a marker using 'onclick attribute'
 function showMarker(id) {
-  google.maps.event.trigger(gmarkers[id],'click');
-  var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); //Makes a latlng
-  map.panTo(latLng); //Make map global
-  if (map.getZoom() < 15) {
+  google.maps.event.trigger(gmarkers[id],'click'); // Show infoWindow
+  var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); // Get lat/lng of marker
+  map.panTo(latLng); // Pan to marker on map
+  if (map.getZoom() < 15) { // Set zoom level, if not already zoomed in
     map.setZoom(15);
   }
 }
