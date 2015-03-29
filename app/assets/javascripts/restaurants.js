@@ -44,6 +44,7 @@ var GeoMarker = null;
 var latArray  = [];
 var lngArray  = [];
 var userLoc   = null;
+var nameIdDistances    = [];
 
 function initialize() {
 
@@ -63,6 +64,13 @@ function initialize() {
       userLoc = pos; // Assign current position to variable
 
       map.setCenter(pos);
+
+      console.log('Found you!');
+
+      for (i = 0; i < restaurants.length; i++) {
+        $(nameIdDistances[i]).text(getDistance(i));
+      }
+
     }, function() {
       handleNoGeolocation(true);
     });
@@ -104,12 +112,14 @@ function initialize() {
   for (i = 0; i < restaurants.length; i++) {
     
     // Create 'View on Map' links
-    var nameId = '#'+restaurants[i].name            // Get restaurant name and prepended '#'...
-      .toLowerCase()                                // ... make lowercase,
-      .replace('\'', '')                            // ... remove apostrophes,
-      .replace(/\s+/g, '')                          // ... remove spaces,
-      +' .view-on-map';                             // ... add 'view-on-map' class.
-    $(nameId).attr('onclick', "showMarker("+i+")"); // Find div with that ID, add 'onclick' attribute for corresponding marker
+    nameId = '#'+restaurants[i].name                    // Get restaurant name and prepended '#'...
+      .toLowerCase()                                    // ... make lowercase,
+      .replace('\'', '')                                // ... remove apostrophes,
+      .replace(/\s+/g, '')                              // ... remove spaces,
+    nameIdMap = nameId+' .view-on-map';                 // ... add 'view-on-map' class.
+    nameIdDist = nameId+' .distance';                   // ... add 'distance' class.
+    $(nameIdMap).attr('onclick', "showMarker("+i+")");  // Find div with that ID, add 'onclick' attribute for corresponding marker
+    nameIdDistances.push(nameIdDist);
 
     // Geocode function
     function codeAddress() {
@@ -182,8 +192,11 @@ function showMarker(id) {
   }
   var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); // Get lat/lng of marker
   map.panTo(latLng); // Pan to marker on map
-  console.log(userLoc)
-  console.log(latLng)
+  getDistance(id);
+}
+// Show a marker using 'onclick attribute'
+function getDistance(id) {
+  var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); // Get lat/lng of marker
   var dist = google.maps.geometry.spherical.computeDistanceBetween (userLoc, latLng);
   function getMiles(i) {
     var conversion = i*0.000621371192
@@ -191,5 +204,5 @@ function showMarker(id) {
     return twoDecimal;
   }
   var distMiles = getMiles(dist);
-  console.log(distMiles)
+  return distMiles
 }
