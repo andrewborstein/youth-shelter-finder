@@ -1,5 +1,5 @@
 /*
- * GOOGLE MAPS API SCRIPT 
+ * GOOGLE MAPS API SCRIPT
  *
  * This script will:
  * - Load the gmaps API
@@ -17,6 +17,7 @@ function ready() {
   script.src  = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBIez1GM_iyBa6nvMkd93F3bi-nYTzssO4&sensor=false&libraries=geometry&callback=restaurants';
     document.body.appendChild(script);
 };
+
 
 // Retrieve JSON restuarant information asynchronously from Rails DB
 function restaurants() {
@@ -45,6 +46,8 @@ var latArray  = [];
 var lngArray  = [];
 var userLoc   = null;
 var nameIdDistances    = [];
+var distArray = [];
+
 
 function initialize() {
 
@@ -58,7 +61,7 @@ function initialize() {
         map: map,
         position: pos,
         content: '<h3>Location pinned from HTML5 Geolocation!</h3>' +
-                    '<h5>Coordinates: ' + pos + '</h5>' 
+                    '<h5>Coordinates: ' + pos + '</h5>'
       });
 
       userLoc = pos; // Assign current position to variable
@@ -69,7 +72,20 @@ function initialize() {
 
       for (i = 0; i < restaurants.length; i++) {
         $(nameIdDistances[i]).text(getDistance(i));
+
       }
+
+
+      Array.prototype.max = function() {        // Find max value in an array
+        return Math.max.apply(null, this);
+      };
+
+      Array.prototype.min = function() {
+        return Math.min.apply(null, this);      // Find min vaue in an array
+      };
+
+      var minimum = distArray.min();
+      console.log(minimum);
 
     }, function() {
       handleNoGeolocation(true);
@@ -110,7 +126,7 @@ function initialize() {
 
   // Loop through locations...
   for (i = 0; i < restaurants.length; i++) {
-    
+
     // Create 'View on Map' links
     nameId = '#'+restaurants[i].name                    // Get restaurant name and prepended '#'...
       .toLowerCase()                                    // ... make lowercase,
@@ -155,11 +171,11 @@ function initialize() {
 
           google.maps.event.addListener (marker, 'click', (function (marker, i) { // Create infoWindow
             return function() {
-              infowindow.setContent(allInfo); 
-              infowindow.open(map, this);   
+              infowindow.setContent(allInfo);
+              infowindow.open(map, this);
             }
           })(marker, i));
-          
+
           bounds.extend(results[0].geometry.location); // Set bounds of map to fit all markers
 
           map.fitBounds(bounds); // Load map with these bounds
@@ -204,5 +220,6 @@ function getDistance(id) {
     return twoDecimal;
   }
   var distMiles = getMiles(dist);
+  distArray.push(distMiles);
   return distMiles
 }
