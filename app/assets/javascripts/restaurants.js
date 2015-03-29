@@ -37,16 +37,19 @@ function restaurants() {
 };
 
 // Set global variable array for use in showMarker() function
-var gmarkers = [];
+var gmarkers  = [];
+var map       = null;
+var latArray  = [];
+var lngArray  = [];
 
 function initialize() {
   
   // Set global Google Maps variables
   var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP }
-  var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
   var geocoder = new google.maps.Geocoder();
   var bounds = new google.maps.LatLngBounds ();
   var infowindow = new google.maps.InfoWindow();
+  map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
   // Loop through locations...
   for (i = 0; i < restaurants.length; i++) {
@@ -85,6 +88,11 @@ function initialize() {
 
           gmarkers.push(marker); // Add markers to array, to use for showMarker() function
 
+          var lat = marker.position.k;
+          var lng = marker.position.D;
+          latArray.push(lat)
+          lngArray.push(lng)
+
           google.maps.event.addListener (marker, 'click', (function (marker, i) { // Create infoWindow
             return function() {
               infowindow.setContent(allInfo); 
@@ -101,10 +109,6 @@ function initialize() {
           console.log('Geocode was not successful for the following reason: ' + status);
 
         }
-
-      // In case I ever want to use latitude and longitude of each marker.
-      // var lat = marker.position.k;
-      // var lng = marker.position.D;
 
       });
 
@@ -123,4 +127,9 @@ function initialize() {
 // Show a marker using 'onclick attribute'
 function showMarker(id) {
   google.maps.event.trigger(gmarkers[id],'click');
+  var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); //Makes a latlng
+  map.panTo(latLng); //Make map global
+  if (map.getZoom() < 15) {
+    map.setZoom(15);
+  }
 }
