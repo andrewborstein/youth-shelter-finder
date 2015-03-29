@@ -37,3 +37,32 @@ th {
   font-weight: 300;
   letter-spacing: 2px;
 }
+
+@media (max-width: 767px) {
+  .table > thead > tr > th, 
+  .table > thead > tr > td, 
+  .table > tbody > tr > th, 
+  .table > tbody > tr > td, 
+  .table > tfoot > tr > th, 
+  .table > tfoot > tr > td {
+    width: 100%;
+    display: block;
+    border: none;
+    padding: 4px;
+  }
+  tr {
+      border-bottom: 1px solid #ddd;
+  }
+  tr:nth-child(2) {
+      border-top: 1px solid #ddd;
+  }
+  .table > tbody > tr > th {
+      display: none;
+  }
+  td:first-child {
+      font-size: 18px;
+  }
+  .container h1 {
+    margin-bottom: 30px;
+  }
+}
