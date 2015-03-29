@@ -75,17 +75,17 @@ function initialize() {
 
       }
 
-
       Array.prototype.max = function() {        // Find max value in an array
         return Math.max.apply(null, this);
       };
-
       Array.prototype.min = function() {
         return Math.min.apply(null, this);      // Find min vaue in an array
       };
 
-      var minimum = distArray.min();
-      console.log(minimum);
+      var minVal = parseFloat(distArray.min()).toFixed(2);
+      var minValIndex = distArray.indexOf(minVal)
+      console.log(minValIndex);
+      $('#closest').attr('onclick', "showMarker("+minValIndex+")");
 
     }, function() {
       handleNoGeolocation(true);
