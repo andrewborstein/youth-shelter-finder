@@ -30,7 +30,11 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <%= f.submit 'Submit', class: 'btn btn-primary' %>
-        <%= link_to "Cancel", restaurant_path(@restaurant), class: 'btn btn-default'%>
+        <% if user_signed_in? && (params[:action] == 'new') %>
+          <%= link_to "Cancel", restaurants_path, class: 'btn btn-default', 'data-no-turbolink' => 'true'%>
+        <% else %>
+          <%= link_to "Cancel", restaurant_path(@restaurant), class: 'btn btn-default'%>
+        <% end %>
       </div>
     </div>
 

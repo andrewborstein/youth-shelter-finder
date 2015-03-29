@@ -1,7 +1,9 @@
 <h1>
   <%= @restaurant.name %>  
-  <%= link_to "Edit", edit_restaurant_path(@restaurant), class: 'btn btn-default' %> 
-  <%= link_to "Delete", restaurant_path(@restaurant), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-default' %> 
+  <% if user_signed_in? && @restaurant.user == current_user %>
+    <%= link_to "Edit", edit_restaurant_path(@restaurant), class: 'btn btn-default' %> 
+    <%= link_to "Delete", restaurant_path(@restaurant), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-default' %> 
+  <% end %>
 </h1>
 <p><em><%= @restaurant.description %></em></p>
 <p><%= @restaurant.address %> </p>
