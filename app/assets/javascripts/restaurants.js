@@ -1,5 +1,5 @@
 /*
- * GOOGLE MAPS API SCRIPT 
+ * GOOGLE MAPS API SCRIPT
  *
  * This script will:
  * - Load the gmaps API
@@ -17,6 +17,7 @@ function ready() {
   script.src  = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBIez1GM_iyBa6nvMkd93F3bi-nYTzssO4&sensor=false&libraries=geometry&callback=restaurants';
     document.body.appendChild(script);
 };
+
 
 // Retrieve JSON restuarant information asynchronously from Rails DB
 function restaurants() {
@@ -38,42 +39,96 @@ function restaurants() {
 
 
 // Set global variable array for use in showMarker() function
-var gmarkers  = [];
-var map       = null;
-var GeoMarker = null;
-var latArray  = [];
-var lngArray  = [];
-var userLoc   = null;
-var nameIdDistances    = [];
+var gmarkers        = [];
+var map             = null;
+var GeoMarker       = null;
+var latArray        = [];
+var lngArray        = [];
+var userLocation    = null;
+var nameIdDistances = [];
+var distArray       = [];
+var myMarker        = 0;
+
 
 function initialize() {
 
-  // Try HTML5 geolocation
-  if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = new google.maps.LatLng(position.coords.latitude,
-                                       position.coords.longitude);
+  // cache the userAgent
+  useragent = navigator.userAgent;
 
-      var infowindow = new google.maps.InfoWindow({
-        map: map,
-        position: pos,
-        content: '<h3>Location pinned from HTML5 Geolocation!</h3>' +
-                    '<h5>Coordinates: ' + pos + '</h5>' 
+  if (navigator.geolocation) {
+
+    displayLocation();
+    
+    function displayLocation() {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = new google.maps.LatLng(position.coords.latitude,
+                                         position.coords.longitude);
+        /*
+        var image = 'assets/bluedot_retina.png';
+        var userMarker = new google.maps.Marker({
+          map: map,
+          position: pos,
+          icon: image
+        });
+        */
+
+        // build entire marker first time thru
+        if ( !myMarker ) {
+          // define our custom marker image
+          var image = new google.maps.MarkerImage(
+            'http://i.imgur.com/BdtrxIt.png',
+            null, // size
+            null, // origin
+            new google.maps.Point( 8, 8 ), // anchor (move to center of marker)
+            new google.maps.Size( 17, 17 ) // scaled size (required for Retina display icon)
+          );
+
+          // then create the new marker
+          myMarker = new google.maps.Marker({
+            flat: true,
+            icon: image,
+            map: map,
+            optimized: false,
+            position: pos,
+            title: 'user_location',
+            visible: true
+          });
+        
+        // just change marker position on subsequent passes
+        } else {
+          myMarker.setPosition( pos );
+        }
+
+        userLocation = pos; // Assign current position to variable
+
+        map.setCenter(userLocation); // Center the map around the current position
+
+        console.log('Found you!'); // Notify the user they have been located (in the console)
+
+        // Print the distances to table
+        for (i = 0; i < restaurants.length; i++) {
+          $(nameIdDistances[i]).text(getDistance(i).toString()+' mi'); // Find corresponding div and print each distance
+        }
+
+        // Activate the 'Find Closest' button
+        Array.prototype.max = function() {                              // Find max value in an array
+          return Math.max.apply(null, this);
+        };
+        Array.prototype.min = function() {                              // Find min vaue in an array
+          return Math.min.apply(null, this);      
+        };
+        var minVal = parseFloat(distArray.min()).toFixed(2);            // Get minimum value in distance array
+        var minValIndex = distArray.indexOf(minVal)                     // Get index of that value
+        $('#closest')
+          .attr('onclick', "showMarker("+minValIndex+")")               // Append attribute to button with id '#closest'
+          .text('Find Closest');                                        // Change button text
+
+      }, function() {
+        handleNoGeolocation(true);
       });
+    
+    }
 
-      userLoc = pos; // Assign current position to variable
-
-      map.setCenter(pos);
-
-      console.log('Found you!');
-
-      for (i = 0; i < restaurants.length; i++) {
-        $(nameIdDistances[i]).text(getDistance(i));
-      }
-
-    }, function() {
-      handleNoGeolocation(true);
-    });
   } else {
     // Browser doesn't support Geolocation
     handleNoGeolocation(false);
@@ -108,9 +163,11 @@ function initialize() {
   });
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
+
+
   // Loop through locations...
   for (i = 0; i < restaurants.length; i++) {
-    
+
     // Create 'View on Map' links
     nameId = '#'+restaurants[i].name                    // Get restaurant name and prepended '#'...
       .toLowerCase()                                    // ... make lowercase,
@@ -155,11 +212,11 @@ function initialize() {
 
           google.maps.event.addListener (marker, 'click', (function (marker, i) { // Create infoWindow
             return function() {
-              infowindow.setContent(allInfo); 
-              infowindow.open(map, this);   
+              infowindow.setContent(allInfo);
+              infowindow.open(map, this);
             }
           })(marker, i));
-          
+
           bounds.extend(results[0].geometry.location); // Set bounds of map to fit all markers
 
           map.fitBounds(bounds); // Load map with these bounds
@@ -197,12 +254,13 @@ function showMarker(id) {
 // Show a marker using 'onclick attribute'
 function getDistance(id) {
   var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); // Get lat/lng of marker
-  var dist = google.maps.geometry.spherical.computeDistanceBetween (userLoc, latLng);
+  var dist = google.maps.geometry.spherical.computeDistanceBetween (userLocation, latLng);
   function getMiles(i) {
     var conversion = i*0.000621371192
     var twoDecimal = parseFloat(conversion).toFixed(2);
     return twoDecimal;
   }
   var distMiles = getMiles(dist);
+  distArray.push(distMiles);
   return distMiles
 }
