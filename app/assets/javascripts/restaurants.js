@@ -55,25 +55,7 @@ function initialize() {
   // cache the userAgent
   useragent = navigator.userAgent;
 
-  // allow iPhone or Android to track movement
-  if ( useragent.indexOf('iPhone') !== -1 || useragent.indexOf('Android') !== -1 ) {
-    
-    displayLocation();
-
-    /*
-    navigator.geolocation.watchPosition( 
-      displayLocation(), 
-      // handleError, 
-      { 
-        enableHighAccuracy: true, 
-        maximumAge: 30000, 
-        timeout: 27000 
-      }
-    ); 
-    */     
-
-  // or let other geolocation capable browsers to get their static position
-  } else if (navigator.geolocation) {
+  if (navigator.geolocation) {
 
     displayLocation();
     
@@ -125,7 +107,7 @@ function initialize() {
 
         // Print the distances to table
         for (i = 0; i < restaurants.length; i++) {
-          $(nameIdDistances[i]).text(getDistance(i)); // Find corresponding div and print each distance
+          $(nameIdDistances[i]).text(getDistance(i).toString()+' mi'); // Find corresponding div and print each distance
         }
 
         // Activate the 'Find Closest' button
@@ -135,9 +117,11 @@ function initialize() {
         Array.prototype.min = function() {                              // Find min vaue in an array
           return Math.min.apply(null, this);      
         };
-        var minVal = parseFloat(distArray.min()).toFixed(2);             // Get minimum value in distance array
-        var minValIndex = distArray.indexOf(minVal)                      // Get index of that value
-        $('#closest').attr('onclick', "showMarker("+minValIndex+")");    // Append attribute to button with id '#closest'
+        var minVal = parseFloat(distArray.min()).toFixed(2);            // Get minimum value in distance array
+        var minValIndex = distArray.indexOf(minVal)                     // Get index of that value
+        $('#closest')
+          .attr('onclick', "showMarker("+minValIndex+")")               // Append attribute to button with id '#closest'
+          .text('Find Closest');                                        // Change button text
 
       }, function() {
         handleNoGeolocation(true);
