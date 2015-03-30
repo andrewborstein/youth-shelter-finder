@@ -57,6 +57,10 @@ function initialize() {
 
   // allow iPhone or Android to track movement
   if ( useragent.indexOf('iPhone') !== -1 || useragent.indexOf('Android') !== -1 ) {
+    
+    displayLocation();
+
+    /*
     navigator.geolocation.watchPosition( 
       displayLocation(), 
       // handleError, 
@@ -65,7 +69,8 @@ function initialize() {
         maximumAge: 30000, 
         timeout: 27000 
       }
-    );      
+    ); 
+    */     
 
   // or let other geolocation capable browsers to get their static position
   } else if (navigator.geolocation) {
@@ -89,7 +94,7 @@ function initialize() {
         if ( !myMarker ) {
           // define our custom marker image
           var image = new google.maps.MarkerImage(
-            'assets/bluedot_retina.png',
+            'http://i.imgur.com/BdtrxIt.png',
             null, // size
             null, // origin
             new google.maps.Point( 8, 8 ), // anchor (move to center of marker)
