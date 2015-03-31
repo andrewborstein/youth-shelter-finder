@@ -1,0 +1,17 @@
+<h1>
+  <%= @shelter.name %>  
+  <% if user_signed_in? && @shelter.user == current_user %>
+    <%= link_to "Edit", edit_shelter_path(@shelter), class: 'btn btn-default' %> 
+    <%= link_to "Delete", shelter_path(@shelter), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-default' %> 
+  <% end %>
+</h1>
+<p><em><%= @shelter.description %></em></p>
+<p><%= @shelter.address %> </p>
+<p><%= @shelter.phone %> </p>
+<p><%= @shelter.gender %> </p>
+<p><%= @shelter.free_bed %> </p>
+<p><%= gmap([@shelter]) %></p>
+
+<p>
+  <%= link_to "Back to shelters Index", shelters_path, class: 'btn btn-primary', 'data-no-turbolink' => 'true' %>
+</p>

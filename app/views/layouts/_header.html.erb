@@ -8,7 +8,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <%= link_to "YootSheltah", root_path, class: "navbar-brand", 'data-no-turbolink' => 'true'  %>
+    <%= link_to "Youth Shelter Finder", root_path, class: "navbar-brand", 'data-no-turbolink' => 'true'  %>
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
@@ -18,8 +18,6 @@
       <li><%#= link_to "About", about_path %></li>
       <% if user_signed_in? %>
         <li><%= link_to "My Account", edit_user_registration_path %></li>
-
-          <li><%= link_to "New Restaurant", new_restaurant_path %></li>
         <li><%= link_to "Log Out", destroy_user_session_path, method: :delete %></li>
       <% else %>
         <li><%= link_to "Log In", user_session_path %></li>

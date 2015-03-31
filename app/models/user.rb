@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :restaurants
+  has_many :shelters
 
   validates :name, presence: true
   #validates :user_id, presence: true

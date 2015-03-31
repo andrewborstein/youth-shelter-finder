@@ -1,6 +1,6 @@
-<%= form_for @restaurant, :html => {:class => "form-horizontal"} do |f| %>
+<%= form_for @shelter, :html => {:class => "form-horizontal"} do |f| %>
     
-    <% @restaurant.errors.full_messages.each do |error| %>
+    <% @shelter.errors.full_messages.each do |error| %>
       <li><%= error %></li>
       <% end %>
     <div class="form-group">
@@ -43,9 +43,9 @@
       <div class="col-sm-offset-2 col-sm-10">
         <%= f.submit 'Submit', class: 'btn btn-primary' %>
         <% if user_signed_in? && (params[:action] == 'new') %>
-          <%= link_to "Cancel", restaurants_path, class: 'btn btn-default', 'data-no-turbolink' => 'true'%>
+          <%= link_to "Cancel", shelters_path, class: 'btn btn-default', 'data-no-turbolink' => 'true'%>
         <% else %>
-          <%= link_to "Cancel", restaurant_path(@restaurant), class: 'btn btn-default'%>
+          <%= link_to "Cancel", shelter_path(@shelter), class: 'btn btn-default'%>
         <% end %>
       </div>
     </div>

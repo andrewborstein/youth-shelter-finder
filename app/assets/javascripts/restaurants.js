@@ -3,8 +3,8 @@
  *
  * This script will:
  * - Load the gmaps API
- * - Get all restaurants info from the database
- * - Create a map with markers for each restaurant
+ * - Get all shelters info from the database
+ * - Create a map with markers for each shelter
  * - Allow its creator to bask in eternal glory
  *
  */
@@ -14,20 +14,20 @@ $(document).ready(ready);  //calls the 'ready' function
 function ready() {
   var script  = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBIez1GM_iyBa6nvMkd93F3bi-nYTzssO4&sensor=false&libraries=geometry&callback=restaurants';
+  script.src  = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBIez1GM_iyBa6nvMkd93F3bi-nYTzssO4&sensor=false&libraries=geometry&callback=shelters';
     document.body.appendChild(script);
 };
 
 
 // Retrieve JSON restuarant information asynchronously from Rails DB
-function restaurants() {
+function shelters() {
   $.ajax({
       type: "GET",
       accept: 'application/json',
-      url: 'restaurants.json',
+      url: 'shelters.json',
   })
     .done(function( xhr, textStatus, response ) {
-      restaurants = xhr; // Create 'restaurants' array from JSON response
+      shelters = xhr; // Create 'shelters' array from JSON response
       initialize(); // Start the 'initialize' function for google maps
   })
   .fail( function( response, textStatus, errorThrown ) {
@@ -63,14 +63,6 @@ function initialize() {
       navigator.geolocation.getCurrentPosition(function(position) {
         var pos = new google.maps.LatLng(position.coords.latitude,
                                          position.coords.longitude);
-        /*
-        var image = 'assets/bluedot_retina.png';
-        var userMarker = new google.maps.Marker({
-          map: map,
-          position: pos,
-          icon: image
-        });
-        */
 
         // build entire marker first time thru
         if ( !myMarker ) {
@@ -106,7 +98,7 @@ function initialize() {
         console.log('Found you!'); // Notify the user they have been located (in the console)
 
         // Print the distances to table
-        for (i = 0; i < restaurants.length; i++) {
+        for (i = 0; i < shelters.length; i++) {
           $(nameIdDistances[i]).text(getDistance(i).toString()+' mi'); // Find corresponding div and print each distance
         }
 
@@ -166,10 +158,10 @@ function initialize() {
 
 
   // Loop through locations...
-  for (i = 0; i < restaurants.length; i++) {
+  for (i = 0; i < shelters.length; i++) {
 
     // Create 'View on Map' links
-    nameId = '#'+restaurants[i].name                    // Get restaurant name and prepended '#'...
+    nameId = '#'+shelters[i].name                    // Get shelters name and prepended '#'...
       .toLowerCase()                                    // ... make lowercase,
       .replace('\'', '')                                // ... remove apostrophes,
       .replace(/\s+/g, '')                              // ... remove spaces,
@@ -182,10 +174,10 @@ function initialize() {
     function codeAddress() {
 
       // Create variables to populate infoWindow
-      var name    = restaurants[i].name,
-          desc    = restaurants[i].description,
-          addr    = restaurants[i].address,
-          phone   = restaurants[i].phone,
+      var name    = shelters[i].name,
+          desc    = shelters[i].description,
+          addr    = shelters[i].address,
+          phone   = shelters[i].phone,
           allInfo = '<h4 style="margin: 0 0 5px;">'+name+'</h4>'+
                     '<em>'+desc+'</em>'+
                     '<p>'+addr+'<br>'+

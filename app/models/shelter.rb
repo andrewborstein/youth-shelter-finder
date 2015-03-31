@@ -1,4 +1,4 @@
-class Restaurant < ActiveRecord::Base
+class Shelter < ActiveRecord::Base
   # attributes = name, description, address, phone
   validates :name, presence:true
 

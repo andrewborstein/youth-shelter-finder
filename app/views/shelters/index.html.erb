@@ -1,0 +1,35 @@
+<h1>
+
+  Shelters
+  <a class="btn btn-primary" onclick="showMarker(closest)" id="closest">Loading...</a>
+
+</h1>
+
+<table class="table table-striped">
+  <tr>
+    <th>Name</th>
+    <th>Address</th>
+    <th>Phone</th>
+    <th>Gender</th>
+    <th>Free Beds*</th>
+    <th>Distance</th>
+    <th>Map</th>
+  </tr>
+  <% @shelters.each do |shelter| %>
+    <tr id="<%= shelter.name.downcase.gsub('\'','').gsub(' ','') %>">
+      <td><strong><%= link_to shelter.name, shelter %></strong></td>
+      <td><%= shelter.address %></td>
+      <td><%= shelter.phone %></td>
+      <td><%= shelter.gender %></td>
+      <td><%= shelter.free_bed %></td>
+      <td><span class="distance">Loading...</span></td>
+      <td><a class="view-on-map" onclick="showMarker()" data-info="" data-marker="">View</a></td>
+    </tr>
+  <% end %>
+
+</table>
+
+
+<div id="map_wrapper">
+    <div id="map_canvas" class="mapping"></div>
+</div>

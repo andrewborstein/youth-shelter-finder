@@ -11,9 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150329203153) do
+ActiveRecord::Schema.define(version: 20150331012154) do
 
-  create_table "restaurants", force: :cascade do |t|
+  create_table "shelters", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
     t.string   "address"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20150329203153) do
     t.integer  "free_bed"
   end
 
-  add_index "restaurants", ["user_id"], name: "index_restaurants_on_user_id"
+  add_index "shelters", ["user_id"], name: "index_shelters_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

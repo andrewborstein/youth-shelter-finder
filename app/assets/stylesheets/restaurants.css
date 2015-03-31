@@ -13,6 +13,7 @@ a {
 #map_wrapper {
     height: 400px;
     background: url('http://i.imgur.com/gpbMnEf.gif') no-repeat center center;
+    margin-bottom: 30px;
 }
 
 #map_canvas {
