@@ -11,7 +11,8 @@
   </tr>
   <% @shelters.each do |shelter| %>
     <tr id="<%= shelter.name.downcase.gsub('\'','').gsub(' ','') %>">
-      <td><strong><%= link_to shelter.name, shelter %></strong></td>
+      <td><strong><%= link_to shelter.name, phone_updater_path(shelter.id) %></strong></td>
+      <td><%= shelter.id %>
 
     </tr>
   <% end %>
