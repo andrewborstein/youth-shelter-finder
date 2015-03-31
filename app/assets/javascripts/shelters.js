@@ -48,6 +48,7 @@ var userLocation    = null;
 var nameIdDistances = [];
 var distArray       = [];
 var myMarker        = 0;
+var bounds          = null;
 
 
 function initialize() {
@@ -93,7 +94,7 @@ function initialize() {
 
         userLocation = pos; // Assign current position to variable
 
-        map.setCenter(userLocation); // Center the map around the current position
+        // map.setCenter(userLocation); // Center the map around the current position
 
         console.log('Found you!'); // Notify the user they have been located (in the console)
 
@@ -111,9 +112,15 @@ function initialize() {
         };
         var minVal = parseFloat(distArray.min()).toFixed(2);            // Get minimum value in distance array
         var minValIndex = distArray.indexOf(minVal)                     // Get index of that value
-        $('#closest')
+        $('#closest_shelter')
           .attr('onclick', "showMarker("+minValIndex+")")               // Append attribute to button with id '#closest'
           .text('Find Closest');                                        // Change button text
+        $('#user_location')
+          .attr('onclick', "showMe()")                                  // Append attribute to button with id '#user_location'
+          .text('My Location');                                         // Change button text
+        $('#all_shelters')
+          .attr('onclick', "showAll()")                                 // Append attribute to button with id '#user_location'
+          .text('View All');                                            // Change button text
 
       }, function() {
         handleNoGeolocation(true);
@@ -144,17 +151,14 @@ function initialize() {
   }
 
 
-
-
   // Set global Google Maps variables
   var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP }
   var geocoder = new google.maps.Geocoder();
-  var bounds = new google.maps.LatLngBounds ();
   var infowindow = new google.maps.InfoWindow({
     disableAutoPan: true
   });
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-
+  bounds = new google.maps.LatLngBounds ();
 
 
   // Loop through locations...
@@ -243,6 +247,7 @@ function showMarker(id) {
   map.panTo(latLng); // Pan to marker on map
   getDistance(id);
 }
+
 // Show a marker using 'onclick attribute'
 function getDistance(id) {
   var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); // Get lat/lng of marker
@@ -255,4 +260,14 @@ function getDistance(id) {
   var distMiles = getMiles(dist);
   distArray.push(distMiles);
   return distMiles
+}
+
+// Center the map around the current user's position
+function showMe() {
+  map.setCenter(userLocation);
+}
+
+// Center the map around the current user's position
+function showAll() {
+  map.fitBounds(bounds);
 }
