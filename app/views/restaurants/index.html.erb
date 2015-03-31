@@ -1,6 +1,9 @@
 <h1>
-  Restaurants
+
+  Shelters
+<!--   <%= link_to "Add Shelter", new_restaurant_path, class: 'btn btn-primary' %> -->
   <a class="btn btn-primary" onclick="showMarker(minimum)" id="closest">Loading...</a>
+
 </h1>
 
 <table class="table table-striped">
@@ -9,6 +12,8 @@
     <th>Description</th>
     <th>Address</th>
     <th>Phone</th>
+    <th>Guest Gender</th>
+    <th>Free Beds*</th>
     <th>Distance</th>
     <th>Map</th>
   </tr>
@@ -18,7 +23,11 @@
       <td><%= restaurant.description %></td>
       <td><%= restaurant.address %></td>
       <td><%= restaurant.phone %></td>
+      <td><%= restaurant.gender %></td>
+      <td><%= restaurant.free_bed %></td>
+<!--       <td><span class="distance"></span> mi</td> -->
       <td><span class="distance">Loading...</span></td>
+
       <td><a class="view-on-map" onclick="showMarker()" data-info="" data-marker="">View on map</a></td>
     </tr>
   <% end %>
