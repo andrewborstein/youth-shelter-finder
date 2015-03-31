@@ -1,0 +1,18 @@
+<table class="table table-striped">
+  <tr>
+    <th>Name</th>
+    <th>Phone Numbers</th>
+  </tr>
+  <%= @shelter do |shelter| %>
+    <tr id="<%= shelter.name.downcase.gsub('\'','').gsub(' ','') %>">
+      <td><strong><%= link_to shelter.name, phone_updater_path(shelter.id) %></strong></td>
+      <!-- This next line should break the page if phone_updater table is empty -->
+      <% @phones.each do |x| %>
+        <% if x.shelter_id==shelter.id %>
+            <%= x.phone_number %><p>, <p>
+        <% end %>
+    <% end %>
+
+
+    </tr>
+  <% end %>
