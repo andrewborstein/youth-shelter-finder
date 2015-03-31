@@ -5,8 +5,10 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'shelters#index'
 
+  resources :phone_updater
   resources :shelters
   devise_for :users
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
