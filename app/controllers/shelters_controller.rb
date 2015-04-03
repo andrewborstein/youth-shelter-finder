@@ -75,7 +75,7 @@ class SheltersController < ApplicationController
 
   # Allow modifications only for that owners, not users
   def owner
-    redirect_to shelters_path, notice: 'Woah there! Only owners can create shelters.' if current_user.owner == false
+    redirect_to shelters_path, notice: 'Woah there! Only owners can create shelters.' unless current_user.owner
   end
 
 end
