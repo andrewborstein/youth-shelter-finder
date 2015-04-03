@@ -1,5 +1,6 @@
 <h1>
-  <%= @shelter.name %>  
+  <%= @shelter.name %> 
+
   <% if user_signed_in? && @shelter.user == current_user %>
     <%= link_to "Edit", edit_shelter_path(@shelter), class: 'btn btn-default' %> 
     <%= link_to "Delete", shelter_path(@shelter), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-default' %> 

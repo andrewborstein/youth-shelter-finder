@@ -17,7 +17,11 @@
       <li><%= link_to "Home", root_path, 'data-no-turbolink' => 'true' %></li>
       <li><%#= link_to "About", about_path %></li>
       <% if user_signed_in? %>
-        <li><%= link_to "My Account", edit_user_registration_path %></li>
+        <% if current_user.owner %>
+          <li><%= link_to "Owner Account", edit_user_registration_path %></li>
+        <% else %>
+          <li><%= link_to "User Account", edit_user_registration_path %></li>
+        <% end %>
         <li><%= link_to "Log Out", destroy_user_session_path, method: :delete %></li>
       <% else %>
         <li><%= link_to "Log In", user_session_path %></li>

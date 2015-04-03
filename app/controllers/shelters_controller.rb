@@ -3,6 +3,7 @@ class SheltersController < ApplicationController
   before_action :set_shelter, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
   before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :owner, only: [:new]
 
   attr_accessor :gmap_address
 
@@ -69,7 +70,12 @@ class SheltersController < ApplicationController
   # Allow modifications only for that shelter's owner, aka the correct user
   def correct_user
     @shelter = current_user.shelters.find_by(id: params[:id])
-    redirect_to shelter_path, notice: 'Woah there! Only owners can manage shelters.' if @shelter.nil?
+    redirect_to shelter_path, notice: 'Woah there! That shelter belongs to someone else.' if @shelter.nil?
+  end
+
+  # Allow modifications only for that owners, not users
+  def owner
+    redirect_to shelters_path, notice: 'Woah there! Only owners can create shelters.' if current_user.owner == false
   end
 
 end
