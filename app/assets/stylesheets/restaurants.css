@@ -24,8 +24,8 @@ a {
 
 a#user_location {
   position: absolute;
-  bottom: 4%;
-  right: 4%;
+  bottom: 20px;
+  right: 20px;
   z-index: 1;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
   border-radius: 60px;
