@@ -29,6 +29,7 @@ function shelters() {
     .done(function( xhr, textStatus, response ) {
       shelters = xhr; // Create 'shelters' array from JSON response
       initialize(); // Start the 'initialize' function for google maps
+      
   })
   .fail( function( response, textStatus, errorThrown ) {
     console.log(response);
@@ -49,7 +50,7 @@ var nameIdDistances = [];
 var distArray       = [];
 var myMarker        = 0;
 var bounds          = null;
-
+var allInfoArray    = [];
 
 function initialize() {
 
@@ -101,6 +102,8 @@ function initialize() {
         // Print the distances to table
         for (i = 0; i < shelters.length; i++) {
           $(nameIdDistances[i]).text(getDistance(i).toString()+' mi'); // Find corresponding div and print each distance
+          // console.log(allInfoArray[i])
+          allInfoArray[i] += ' <span>'+getDistance(i).toString()+' miles away</span>'
         }
 
         // Activate the 'Find Closest' button
@@ -113,14 +116,17 @@ function initialize() {
         var minVal = parseFloat(distArray.min()).toFixed(2);            // Get minimum value in distance array
         var minValIndex = distArray.indexOf(minVal)                     // Get index of that value
         $('#closest_shelter')
+          .removeClass('hide')                                          // Show the button
           .attr('onclick', "showMarker("+minValIndex+")")               // Append attribute to button with id '#closest'
-          .text('Find Closest');                                        // Change button text
         $('#user_location')
+          .removeClass('hide')                                          // Show the button
           .attr('onclick', "showMe()")                                  // Append attribute to button with id '#user_location'
-          .text('My Location');                                         // Change button text
         $('#all_shelters')
           .attr('onclick', "showAll()")                                 // Append attribute to button with id '#user_location'
-          .text('View All');                                            // Change button text
+        $('.loading')
+          .removeClass('loading')                                       // Hide loading icon
+
+        // console.log(allInfoArray);
 
       }, function() {
         handleNoGeolocation(true);
@@ -187,6 +193,8 @@ function initialize() {
                     '<p>'+addr+'<br>'+
                     phone+'</p>'
 
+      allInfoArray.push(allInfo); // Add infoWindow contents to array, so we can add distances to them after they've been geocoded
+
       // Geocode using location address
       geocoder.geocode( { 'address': addr }, function(results, status) {
 
@@ -208,6 +216,7 @@ function initialize() {
 
           google.maps.event.addListener (marker, 'click', (function (marker, i) { // Create infoWindow
             return function() {
+              hasDistance();
               infowindow.setContent(allInfo);
               infowindow.open(map, this);
             }
@@ -270,4 +279,16 @@ function showMe() {
 // Center the map around the current user's position
 function showAll() {
   map.fitBounds(bounds);
+}
+
+function hasDistance() {
+  // If the infoWindow array that includes distances has been calculated, use that
+  if (allInfoArray != []) { 
+    for (i = 0; i < shelters.length; i++) {
+      allInfo = allInfoArray[i];
+      console.log(allInfoArray[i])
+    }
+  } else {
+    allInfo = allInfo;
+  }
 }

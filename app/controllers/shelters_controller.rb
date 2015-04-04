@@ -2,8 +2,9 @@ class SheltersController < ApplicationController
 
   before_action :set_shelter, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :correct_user, only: [:edit, :update, :destroy]
-  before_action :owner, only: [:new]
+  before_action :belongs_to_user, only: [:edit, :update, :destroy]
+  before_action :owner, only: [:edit, :update, :destroy]
+  before_action :admin, only: [:new]
 
   attr_accessor :gmap_address
 
@@ -57,7 +58,7 @@ class SheltersController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
+  # For any single shelther instance, set the default @shelter
   def set_shelter
     @shelter = Shelter.find(params[:id])
   end
@@ -67,15 +68,22 @@ class SheltersController < ApplicationController
     params.require(:shelter).permit(:name, :description, :address, :phone, :gender, :free_bed)
   end
 
-  # Allow modifications only for that shelter's owner, aka the correct user
-  def correct_user
-    @shelter = current_user.shelters.find_by(id: params[:id])
-    redirect_to shelter_path, notice: 'Woah there! That shelter belongs to someone else.' if @shelter.nil?
+  # Allow modifications only for each shelter's owner, unless you're an admin
+  def belongs_to_user
+    unless current_user.admin
+      @shelter = current_user.shelters.find_by(id: params[:id]) 
+      redirect_to shelter_path, notice: 'Woah there! That shelter belongs to someone else.' if @shelter.nil?
+    end
   end
 
-  # Allow modifications only for that owners, not users
+  # Allow modifications only for owners or admins
   def owner
-    redirect_to shelters_path, notice: 'Woah there! Only owners can create shelters.' unless current_user.owner
+    redirect_to shelters_path, notice: 'Woah there! Only owners can edit shelters.' unless current_user.owner || current_user.admin
+  end
+
+  # Allow new shelter creation only for admins
+  def admin
+    redirect_to shelters_path, notice: 'Woah there! Only admins can create shelters.' unless current_user.admin
   end
 
 end

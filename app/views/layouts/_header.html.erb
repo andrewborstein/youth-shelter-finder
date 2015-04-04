@@ -17,7 +17,9 @@
       <li><%= link_to "Home", root_path, 'data-no-turbolink' => 'true' %></li>
       <li><%#= link_to "About", about_path %></li>
       <% if user_signed_in? %>
-        <% if current_user.owner %>
+        <% if current_user.admin %>
+          <li><%= link_to "Admin Account", edit_user_registration_path %></li>
+        <% elsif current_user.owner %>
           <li><%= link_to "Owner Account", edit_user_registration_path %></li>
         <% else %>
           <li><%= link_to "User Account", edit_user_registration_path %></li>

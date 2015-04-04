@@ -1,9 +1,9 @@
 <h1>
 
   Shelters
-  <a class="btn btn-default" onclick="showAll()" id="all_shelters">Loading...</a>
-  <a class="btn btn-default" onclick="showMe()" id="user_location">Loading...</a>
-  <a class="btn btn-primary" onclick="showMarker()" id="closest_shelter">Loading...</a>
+  <a class="btn btn-default" onclick="showAll()" id="all_shelters">View All</a>
+  <span class="loading"></span>
+  <a class="btn btn-primary hide" onclick="showMarker()" id="closest_shelter">Find Closest</a>
   
 
 </h1>
@@ -34,5 +34,8 @@
 
 
 <div id="map_wrapper">
+    <a class="btn btn-default compass" onclick="showMe()" id="user_location">
+      <img src="https://i.imgur.com/QoHMbd5.png" class="img-resposive">
+    </a>
     <div id="map_canvas" class="mapping"></div>
 </div>
