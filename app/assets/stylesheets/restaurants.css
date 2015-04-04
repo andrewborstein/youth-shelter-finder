@@ -24,8 +24,8 @@ a {
 
 a#user_location {
   position: absolute;
-  bottom: 30px;
-  right: 30px;
+  bottom: 4%;
+  right: 4%;
   z-index: 1;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
   border-radius: 60px;
@@ -148,6 +148,13 @@ th {
       font-size: 18px;
   }
   .container h1 {
-    margin-bottom: 30px;
+    margin: 0 0 15px;
+  }
+  .btn {
+    display: block;
+    margin: 5px 0;
+  }
+  #map_wrapper {
+    height: 60vh;
   }
 }
