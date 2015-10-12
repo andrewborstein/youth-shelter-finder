@@ -29,7 +29,7 @@ function shelters() {
     .done(function( xhr, textStatus, response ) {
       shelters = xhr; // Create 'shelters' array from JSON response
       initialize(); // Start the 'initialize' function for google maps
-      
+
   })
   .fail( function( response, textStatus, errorThrown ) {
     console.log(response);
@@ -60,7 +60,7 @@ function initialize() {
   if (navigator.geolocation) {
 
     displayLocation();
-    
+
     function displayLocation() {
       navigator.geolocation.getCurrentPosition(function(position) {
         var pos = new google.maps.LatLng(position.coords.latitude,
@@ -87,7 +87,7 @@ function initialize() {
             title: 'user_location',
             visible: true
           });
-        
+
         // just change marker position on subsequent passes
         } else {
           myMarker.setPosition( pos );
@@ -101,9 +101,9 @@ function initialize() {
 
         // Print the distances to table
         for (i = 0; i < shelters.length; i++) {
-          $(nameIdDistances[i]).text(getDistance(i).toString()+' mi'); // Find corresponding div and print each distance
+          $(nameIdDistances[i]).text(getDistance(i) + ' mi'); // Find corresponding div and print each distance
           // console.log(allInfoArray[i])
-          allInfoArray[i] += ' <span>'+getDistance(i).toString()+' miles away</span>'
+          allInfoArray[i] += ' <span>'+getDistance(i) + ' miles away</span>'
         }
 
         // Activate the 'Find Closest' button
@@ -111,7 +111,7 @@ function initialize() {
           return Math.max.apply(null, this);
         };
         Array.prototype.min = function() {                              // Find min vaue in an array
-          return Math.min.apply(null, this);      
+          return Math.min.apply(null, this);
         };
         var minVal = parseFloat(distArray.min()).toFixed(2);            // Get minimum value in distance array
         var minValIndex = distArray.indexOf(minVal)                     // Get index of that value
@@ -131,7 +131,7 @@ function initialize() {
       }, function() {
         handleNoGeolocation(true);
       });
-    
+
     }
 
   } else {
@@ -209,8 +209,8 @@ function initialize() {
           gmarkers.push(marker); // Add markers to array, to use for showMarker() function
 
           // Create latitude and longitude arrays, for panning map inside showMarker() function
-          var lat = marker.position.k;
-          var lng = marker.position.D;
+          var lat = marker.position.J;
+          var lng = marker.position.M;
           latArray.push(lat)
           lngArray.push(lng)
 
@@ -283,7 +283,7 @@ function showAll() {
 
 function hasDistance() {
   // If the infoWindow array that includes distances has been calculated, use that
-  if (allInfoArray != []) { 
+  if (allInfoArray != []) {
     for (i = 0; i < shelters.length; i++) {
       allInfo = allInfoArray[i];
       console.log(allInfoArray[i])
