@@ -25,7 +25,7 @@ a {
 a#user_location {
   position: absolute;
   bottom: 20px;
-  right: 20px;
+  right: 50px;
   z-index: 1;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
   border-radius: 60px;
@@ -91,7 +91,7 @@ th {
       opacity: 0;
     }
   }
-  /* get the container that's just outside the marker image, 
+  /* get the container that's just outside the marker image,
     which just happens to have our Marker title in it */
   #map_canvas div.gmnoprint[title="user_location"] {
     -moz-animation: pulsate 1.5s ease-in-out infinite;
@@ -124,11 +124,11 @@ th {
 
 
 @media (max-width: 767px) {
-  .table > thead > tr > th, 
-  .table > thead > tr > td, 
-  .table > tbody > tr > th, 
-  .table > tbody > tr > td, 
-  .table > tfoot > tr > th, 
+  .table > thead > tr > th,
+  .table > thead > tr > td,
+  .table > tbody > tr > th,
+  .table > tbody > tr > td,
+  .table > tfoot > tr > th,
   .table > tfoot > tr > td {
     width: 100%;
     display: block;
