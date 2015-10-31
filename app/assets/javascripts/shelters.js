@@ -74,7 +74,7 @@ function initialize() {
         if ( !myMarker ) {
           // define our custom marker image
           var image = new google.maps.MarkerImage(
-            'http://i.imgur.com/BdtrxIt.png',
+            'https://i.imgur.com/BdtrxIt.png',
             null, // size
             null, // origin
             new google.maps.Point( 8, 8 ), // anchor (move to center of marker)
