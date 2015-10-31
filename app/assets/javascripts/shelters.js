@@ -99,7 +99,7 @@ function initialize() {
 
         userLocation = pos; // Assign current position to variable
 
-        console.log('Found you!'); // Notify the user they have been located (in the console)
+        console.log('You have been successfully located on the map!'); // Notify the user they have been located (in the console)
 
         // Print the distances to table
         for (i = 0; i < shelters.length; i++) {
@@ -170,6 +170,7 @@ function initialize() {
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
   bounds = new google.maps.LatLngBounds ();
 
+  console.log("'View' buttons will trigger markers based on the following order:")
 
   // Loop through locations...
   for (i = 0; i < shelters.length; i++) {
@@ -213,7 +214,6 @@ function initialize() {
           });
 
           gmarkers.push(marker); // Add markers to array, to use for showMarker() function
-          console.log(marker)
           console.log(i)
 
           // Create latitude and longitude arrays, for panning map inside showMarker() function
