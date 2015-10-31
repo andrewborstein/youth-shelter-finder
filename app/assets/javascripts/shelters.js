@@ -9,7 +9,7 @@
  *
  */
 
-$(document).ready(ready);  //calls the 'ready' function
+$(document).ready(ready);  // calls the 'ready' function
 
 function ready() {
   var script  = document.createElement('script');
@@ -51,12 +51,16 @@ var distArray       = [];
 var myMarker        = 0;
 var bounds          = null;
 var allInfoArray    = [];
+var allInfoObject   = {};
 
 function initialize() {
 
   // cache the userAgent
   useragent = navigator.userAgent;
 
+  // -----------------------------
+  // Get User's Location
+  // -----------------------------
   if (navigator.geolocation) {
 
     displayLocation();
@@ -95,15 +99,12 @@ function initialize() {
 
         userLocation = pos; // Assign current position to variable
 
-        // map.setCenter(userLocation); // Center the map around the current position
-
         console.log('Found you!'); // Notify the user they have been located (in the console)
 
         // Print the distances to table
         for (i = 0; i < shelters.length; i++) {
-          $(nameIdDistances[i]).text(getDistance(i) + ' mi'); // Find corresponding div and print each distance
-          // console.log(allInfoArray[i])
-          allInfoArray[i] += ' <span>'+getDistance(i) + ' miles away</span>'
+          distance = getDistance(i);
+          printDistance(distance, shelters[i].name);
         }
 
         // Activate the 'Find Closest' button
@@ -126,8 +127,6 @@ function initialize() {
         $('.loading')
           .removeClass('loading')                                       // Hide loading icon
 
-        // console.log(allInfoArray);
-
       }, function() {
         handleNoGeolocation(true);
       });
@@ -139,6 +138,7 @@ function initialize() {
     handleNoGeolocation(false);
   }
 
+  // Handle when there's no GeoLocation available
   function handleNoGeolocation(errorFlag) {
     if (errorFlag) {
       var content = 'Error: The Geolocation service failed.';
@@ -157,6 +157,10 @@ function initialize() {
   }
 
 
+  // -----------------------------
+  // Populate the Map & App
+  // -----------------------------
+
   // Set global Google Maps variables
   var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP }
   var geocoder = new google.maps.Geocoder();
@@ -171,7 +175,7 @@ function initialize() {
   for (i = 0; i < shelters.length; i++) {
 
     // Create 'View on Map' links
-    nameId = '#'+shelters[i].name                    // Get shelters name and prepended '#'...
+    nameId = '#'+shelters[i].name                       // Get shelters name and prepended '#'...
       .toLowerCase()                                    // ... make lowercase,
       .replace('\'', '')                                // ... remove apostrophes,
       .replace(/\s+/g, '')                              // ... remove spaces,
@@ -181,7 +185,7 @@ function initialize() {
     nameIdDistances.push(nameIdDist);
 
     // Geocode function
-    function codeAddress() {
+    function codeAddress(i) {
 
       // Create variables to populate infoWindow
       var name    = shelters[i].name,
@@ -193,7 +197,9 @@ function initialize() {
                     '<p>'+addr+'<br>'+
                     phone+'</p>'
 
-      allInfoArray.push(allInfo); // Add infoWindow contents to array, so we can add distances to them after they've been geocoded
+      // Add infoWindow contents to array, so we can add distances to them after they've been geocoded
+      allInfoArray.push(allInfo);
+      allInfoObject[name] = allInfo;
 
       // Geocode using location address
       geocoder.geocode( { 'address': addr }, function(results, status) {
@@ -207,18 +213,22 @@ function initialize() {
           });
 
           gmarkers.push(marker); // Add markers to array, to use for showMarker() function
+          console.log(marker)
+          console.log(i)
 
           // Create latitude and longitude arrays, for panning map inside showMarker() function
-          var lat = marker.position.J;
-          var lng = marker.position.M;
+          var lat = marker.getPosition().lat();
+          var lng = marker.getPosition().lng();
           latArray.push(lat)
           lngArray.push(lng)
 
-          google.maps.event.addListener (marker, 'click', (function (marker, i) { // Create infoWindow
-            return function() {
-              hasDistance();
-              infowindow.setContent(allInfo);
-              infowindow.open(map, this);
+          // Create listener for marker click events
+          google.maps.event.addListener (marker, 'click', (function (marker, i) {
+              return function() {                         // On click...
+              map.panTo(marker.getPosition());              // Center the map on the marker
+              infowindow.setContent(allInfoObject[name]);   // Populate infowindow content & distances
+              infowindow.open(map, this);                   // Open infowindow
+              openInfoWindow = infowindow;                  // Assign infowindow to var, to close with showAll()
             }
           })(marker, i));
 
@@ -236,15 +246,14 @@ function initialize() {
 
     }
 
-    // Code the addresses!
-    codeAddress();
+    // Code the address for this shelter
+    codeAddress(i);
+    }
 
   }
-
-  // Load the map after window loads
-  google.maps.event.addDomListener(window, 'load', initialize);
-
-  }
+// -----------------------------
+// Functions
+// -----------------------------
 
 // Show a marker using 'onclick attribute'
 function showMarker(id) {
@@ -254,13 +263,12 @@ function showMarker(id) {
   }
   var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); // Get lat/lng of marker
   map.panTo(latLng); // Pan to marker on map
-  getDistance(id);
 }
 
-// Show a marker using 'onclick attribute'
+// Calculate the distance between each marker and the current user
 function getDistance(id) {
   var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); // Get lat/lng of marker
-  var dist = google.maps.geometry.spherical.computeDistanceBetween (userLocation, latLng);
+  var dist = google.maps.geometry.spherical.computeDistanceBetween(userLocation, latLng);
   function getMiles(i) {
     var conversion = i*0.000621371192
     var twoDecimal = parseFloat(conversion).toFixed(2);
@@ -271,24 +279,20 @@ function getDistance(id) {
   return distMiles
 }
 
+// Print the calculated distances
+function printDistance(distance, name) {
+  $(nameIdDistances[i]).text(distance + ' mi'); // Find corresponding div and print each distance
+  allInfoArray[i] += ' <span>'+distance + ' miles away</span>' // Append distances to infowindows array
+  allInfoObject[name] += ' <span>'+distance + ' miles away</span>' // Append distances to infowindows array
+}
+
 // Center the map around the current user's position
 function showMe() {
   map.setCenter(userLocation);
 }
 
-// Center the map around the current user's position
+// Zoom to fit all the markers on the map, close any open infowindows
 function showAll() {
   map.fitBounds(bounds);
-}
-
-function hasDistance() {
-  // If the infoWindow array that includes distances has been calculated, use that
-  if (allInfoArray != []) {
-    for (i = 0; i < shelters.length; i++) {
-      allInfo = allInfoArray[i];
-      console.log(allInfoArray[i])
-    }
-  } else {
-    allInfo = allInfo;
-  }
+  openInfoWindow.close();
 }
