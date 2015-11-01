@@ -42,7 +42,7 @@
           <% elsif shelter.free_bed < 5 && shelter.free_bed > 1 %>
             <span class="label label-danger" data-toggle="popover" data-placement="top" title="Low on beds!" data-content="Get in touch soon, because there are only <%= shelter.free_bed %> beds avalable.">
           <% elsif shelter.free_bed < 2 %>
-            <span class="label label-danger" data-toggle="popover" data-placement="top" title="Low on beds!" data-content="Get in touch soon, because there is only <%= shelter.free_bed %> bed avalable.">
+            <span class="label label-danger" data-toggle="popover" data-placement="top" title="One bed left!" data-content="Get in touch soon, because there is only <%= shelter.free_bed %> bed avalable.">
           <% else %>
             <span class="label label-warning">
           <% end %>
