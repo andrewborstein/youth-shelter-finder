@@ -7,7 +7,7 @@
 
 <%= render 'layouts/header' %>
 
-<div class="container">
+<div class="container list">
   <% flash.each do |name, msg| %>
     <div class='alert alert-info text-center alert-dismissible' role="alert">
       <strong><%= name.capitalize %>:</strong> <span><%= msg %></span>

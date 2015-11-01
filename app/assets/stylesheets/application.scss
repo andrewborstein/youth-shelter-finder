@@ -14,12 +14,12 @@
  *= require 'font-awesome'
  */
 
-// Custom CSS
-@import "restaurants";
-
 // Custom Bootstrap Styles, via Sass
 @import "bootstrap-variables";
 
 // Default Bootstrap Styles
-@import "bootstrap-sprockets";
+// @import "bootstrap-sprockets";
 @import "bootstrap";
+
+// Custom CSS
+@import "restaurants";

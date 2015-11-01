@@ -1,36 +1,67 @@
-<h1>
+<div>
+  <h1><span class="hidden-xs">Shelters</span>
 
-  Shelters
-  <a class="btn btn-default" onclick="showAll()" id="all_shelters">Zoom Out</a>
-  <span class="loading"></span>
-  <a class="btn btn-primary hide" onclick="showMarker()" id="closest_shelter">Find Closest</a>
+    <div class="visible-xs">
+      <h1>Shelters</h1>
+      <a class="btn btn-default toggle-view list">
+        <span class="view-map">
+          <i class="fa fa-map-o"></i>
+          <span>View Map</span>
+        </span>
+        <span class="view-list">
+          <i class="fa fa-list-ul"></i>
+          <span>View List</span>
+        </span>
+      </a>
+    </div>
+    <div class="map-buttons">
+      <a class="btn btn-default" onclick="showAll()" id="all_shelters">Zoom Out</a>
+      <span class="loading"></span>
+      <a class="btn btn-primary hide" onclick="showMarker()" id="closest_shelter">Find Closest</a>
+    </div>
+  </h1>
+</div>
 
-
-</h1>
-
-<table class="table table-striped hidden-xs">
+<table class="table table-striped">
   <tr>
     <th>Name</th>
     <th>Address</th>
     <th>Phone</th>
     <th>Gender</th>
-    <th>Free Beds*</th>
     <th>Distance</th>
     <th>Map</th>
   </tr>
   <% @shelters.each do |shelter| %>
     <tr id="<%= shelter.name.downcase.gsub('\'','').gsub(' ','') %>">
-      <td><strong><%= link_to shelter.name, shelter %></strong></td>
-      <td><%= shelter.address %></td>
-      <td><%= shelter.phone %></td>
-      <td><%= shelter.gender %></td>
-      <td><%= shelter.free_bed %></td>
-      <td><span class="distance">Loading...</span></td>
-      <td><a class="view-on-map" onclick="showMarker()" data-info="" data-marker="">View</a></td>
+      <td><div>
+        <% if shelter.free_bed.nil? %>
+          <span class="label label-default" data-toggle="popover" data-placement="top" title="Unknown" data-content="We don't have any information about current bed availability.">?</span>
+        <% else %>
+          <% if shelter.free_bed > 10 %>
+            <span class="label label-success" data-toggle="popover" data-placement="top" title="Plenty of beds." data-content="There are <%= shelter.free_bed %> beds avalable.">
+          <% elsif shelter.free_bed < 5 && shelter.free_bed > 1 %>
+            <span class="label label-danger" data-toggle="popover" data-placement="top" title="Low on beds!" data-content="Get in touch soon, because there are only <%= shelter.free_bed %> beds avalable.">
+          <% elsif shelter.free_bed < 2 %>
+            <span class="label label-danger" data-toggle="popover" data-placement="top" title="Low on beds!" data-content="Get in touch soon, because there is only <%= shelter.free_bed %> bed avalable.">
+          <% else %>
+            <span class="label label-warning">
+          <% end %>
+          <%= shelter.free_bed %></span>
+        <% end %>
+          <%= link_to shelter.name, shelter %>
+        </div>
+      </td>
+      <td><div><%= shelter.address %></div></td>
+      <td><div><%= shelter.phone %></div></td>
+      <td><div><%= shelter.gender %></div></td>
+      <td><div><span class="distance">Loading...</span></div></td>
+      <td><div class="hidden-xs"><a class="view-on-map" onclick="showMarker()" data-info="" data-marker="">View</a></div></td>
     </tr>
   <% end %>
 
 </table>
+
+
 
 
 <div id="map_wrapper">

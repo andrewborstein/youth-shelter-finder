@@ -10,6 +10,12 @@ body {
 a {
   cursor: pointer;
 }
+h1 {
+  display: inline-block;
+}
+.map-buttons {
+  display: inline-block;
+}
 #map_wrapper {
     height: 400px;
     background: url('https://i.imgur.com/gpbMnEf.gif') no-repeat center center;
@@ -133,28 +139,41 @@ th {
     width: 100%;
     display: block;
     border: none;
-    padding: 4px;
+    padding: 0;
+  }
+  .table > tfoot > tr > td.visible-xs-block {
+    display: block;
   }
   tr {
-      border-bottom: 1px solid #ddd;
-  }
-  tr:nth-child(2) {
-      border-top: 1px solid #ddd;
+    border-bottom: 25px solid transparent;
   }
   .table > tbody > tr > th {
-      display: none;
+    display: none;
   }
   td:first-child {
-      font-size: 18px;
+    font-size: 18px;
+  }
+  .table > thead > tr > td > div,
+  .table > tbody > tr > td > div,
+  .table > tfoot > tr > td > div {
+    line-height: 24px;
   }
   .container h1 {
     margin: 0 0 15px;
-  }
-  .btn {
-    display: block;
-    margin: 5px 0;
+    font-size: 24px;
   }
   #map_wrapper {
-    height: 60vh;
+    height: 87vh;
+  }
+  .container.list .view-list,
+  .container.list .map-buttons {
+    display: none;
+  }
+  .container.map .view-map,
+  .container.map table {
+    display: none;
+  }
+  .toggle-view {
+    display: inline-block;
   }
 }

@@ -40,18 +40,19 @@ function shelters() {
 
 
 // Set global variable array for use in showMarker() function
-var gmarkers        = [];
-var map             = null;
-var GeoMarker       = null;
-var latArray        = [];
-var lngArray        = [];
-var userLocation    = null;
-var nameIdDistances = [];
-var distArray       = [];
-var myMarker        = 0;
-var bounds          = null;
 var allInfoArray    = [];
 var allInfoObject   = {};
+var bounds          = null;
+var distArray       = [];
+var GeoMarker       = null;
+var gmarkers        = [];
+var latArray        = [];
+var lngArray        = [];
+var map             = null;
+var myMarker        = 0;
+var nameIdDistances = [];
+var openInfoWindow  = null;
+var userLocation    = null;
 
 function initialize() {
 
@@ -251,6 +252,7 @@ function initialize() {
     }
 
   }
+
 // -----------------------------
 // Functions
 // -----------------------------
@@ -274,16 +276,24 @@ function getDistance(id) {
     var twoDecimal = parseFloat(conversion).toFixed(2);
     return twoDecimal;
   }
-  var distMiles = getMiles(dist);
+  distMiles = getMiles(dist);
   distArray.push(distMiles);
   return distMiles
 }
 
 // Print the calculated distances
 function printDistance(distance, name) {
-  $(nameIdDistances[i]).text(distance + ' mi'); // Find corresponding div and print each distance
-  allInfoArray[i] += ' <span>'+distance + ' miles away</span>' // Append distances to infowindows array
-  allInfoObject[name] += ' <span>'+distance + ' miles away</span>' // Append distances to infowindows array
+  if (isNaN(distance)) {
+    console.log('Distance not calculated properly, please refresh.');
+    var distanceTable = 'Please refresh';
+    var distanceInfoWindow = ''
+  } else {
+    var distanceTable = distance + ' mi'
+    var distanceInfoWindow = ' <span>'+distance + ' miles away</span>'
+  }
+  $(nameIdDistances[i]).text(distanceTable);  // Find corresponding div and print each distance
+  allInfoArray[i] += distanceInfoWindow       // Append distances to infowindows array
+  allInfoObject[name] += distanceInfoWindow   // Append distances to infowindows array
 }
 
 // Center the map around the current user's position
@@ -296,3 +306,17 @@ function showAll() {
   map.fitBounds(bounds);
   openInfoWindow.close();
 }
+
+// -----------------------------
+// User Interface
+// -----------------------------
+$(document).ready(function() {
+  $('.list .toggle-view').click(function() {
+    $(this).toggleClass('list map');
+    $('.container').toggleClass('list map');
+  });
+  $(function () {
+    $('[data-toggle="popover"]').popover()
+  })
+});
+
