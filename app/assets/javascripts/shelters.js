@@ -285,15 +285,15 @@ function getDistance(id) {
 function printDistance(distance, name) {
   if (isNaN(distance)) {
     console.log('Distance not calculated properly, please refresh.');
-    var distanceTable = 'Please refresh';
+    var distanceTable = '';
     var distanceInfoWindow = ''
   } else {
-    var distanceTable = distance + ' mi'
+    var distanceTable = distance + ' miles away'
     var distanceInfoWindow = ' <span>'+distance + ' miles away</span>'
   }
-  $(nameIdDistances[i]).text(distanceTable);  // Find corresponding div and print each distance
+  $(nameIdDistances[i]).text(distanceTable);  // Find corresponding div inside table and print distance
   allInfoArray[i] += distanceInfoWindow       // Append distances to infowindows array
-  allInfoObject[name] += distanceInfoWindow   // Append distances to infowindows array
+  allInfoObject[name] += distanceInfoWindow   // Append distances to infowindows object
 }
 
 // Center the map around the current user's position
