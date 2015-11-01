@@ -19,6 +19,7 @@
       <% if user_signed_in? %>
         <% if current_user.admin %>
           <li><%= link_to "Admin Account", edit_user_registration_path %></li>
+          <li><%= link_to "New Shelter", new_shelter_path %></li>
         <% elsif current_user.owner %>
           <li><%= link_to "Owner Account", edit_user_registration_path %></li>
         <% else %>

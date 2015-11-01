@@ -1,5 +1,5 @@
 <%= form_for @shelter, :html => {:class => "form-horizontal"} do |f| %>
-    
+
     <% @shelter.errors.full_messages.each do |error| %>
       <li><%= error %></li>
       <% end %>
