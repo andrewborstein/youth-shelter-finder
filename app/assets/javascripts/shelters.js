@@ -316,7 +316,7 @@ $(document).ready(function() {
     $('.container').toggleClass('list map');
   });
   $(function () {
-    $('[data-toggle="popover"]').popover()
+    $('[data-toggle="popover"]').popover({ trigger: "hover" })
   })
   $('body').on('click', function (e) {
     $('[data-toggle="popover"]').each(function () {

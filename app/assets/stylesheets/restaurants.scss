@@ -27,7 +27,6 @@ h1 {
     width: 100%;
     height: 100%;
 }
-
 a#user_location {
   position: absolute;
   bottom: 20px;
@@ -37,15 +36,12 @@ a#user_location {
   border-radius: 60px;
   padding: 12px;
 }
-
 a#user_location img {
   width: 20px;
 }
-
 .hide {
   display: none
 }
-
 .loading {
   height: 20px;
   width: 30px;
@@ -53,21 +49,26 @@ a#user_location img {
   display: inline-block;
   background-size: contain;
 }
-
 th {
   text-align: left;
   text-transform: uppercase;
 }
-
 .table > tbody > tr > td {
   vertical-align: middle !important;
 }
-
 .table > tbody > tr > th {
   font-weight: 300;
   letter-spacing: 2px;
 }
-
+td span.label {
+  font-weight: normal;
+  cursor: pointer;
+  padding: 7px 5px;
+  display: inline-block;
+  min-width: 25px;
+  font-size: 12px;
+  margin-right: 5px;
+}
 /* your custom CSS \*/
   @-moz-keyframes pulsate {
     from {
