@@ -14,8 +14,10 @@
 <p><%= gmap([@shelter]) %></p>
 
 <p>
-  <% if current_user.admin || current_user.owner %>
-    <%= link_to "Edit", edit_shelter_path, class: 'btn btn-default'%>
   <%= link_to "Back to Shelters", shelters_path, class: 'btn btn-primary' %>
+  <% if user_signed_in? %>
+    <% if current_user.admin || current_user.owner %>
+      <%= link_to "Edit", edit_shelter_path, class: 'btn btn-default'%>
+    <% end %>
   <% end %>
 </p>
