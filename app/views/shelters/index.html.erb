@@ -32,23 +32,10 @@
     <th>Map</th>
   </tr>
   <% @shelters.each do |shelter| %>
-    <tr id="<%= shelter.name.downcase.gsub('\'','').gsub(' ','') %>">
+    <tr id="<%= shelter_name_id(shelter.name) %>">
       <td><div>
-        <% if shelter.free_bed.nil? %>
-          <span class="label label-default" data-toggle="popover" data-placement="top" title="Unknown" data-content="We don't have any information about current bed availability.">?</span>
-        <% else %>
-          <% if shelter.free_bed > 10 %>
-            <span class="label label-success" data-toggle="popover" data-placement="top" title="High Availability" data-content="There are <%= shelter.free_bed %> beds currently available.">
-          <% elsif shelter.free_bed < 5 && shelter.free_bed > 1 %>
-            <span class="label label-danger" data-toggle="popover" data-placement="top" title="Low Availability" data-content="There are only <%= shelter.free_bed %> beds currently available.">
-          <% elsif shelter.free_bed < 2 %>
-            <span class="label label-danger" data-toggle="popover" data-placement="top" title="One Bed Left" data-content="There is only <%= shelter.free_bed %> bed currently available.">
-          <% else %>
-            <span class="label label-warning" data-toggle="popover" data-placement="top" title="Medium Availability" data-content="There are <%= shelter.free_bed %> beds currently available.">
-          <% end %>
-          <%= shelter.free_bed %></span>
-        <% end %>
-          <%= link_to shelter.name, shelter %>
+        <span class="label label-<%= availability_popover_class(shelter) %>" data-toggle="popover" data-placement="top" title="<%= availability_popover_title(shelter) %>" data-content="<%= availability_popover_content(shelter) %>"><%= free_beds(shelter) %></span>
+        <%= link_to shelter.name, shelter %>
         </div>
       </td>
       <td><div><%= shelter.address %></div></td>
