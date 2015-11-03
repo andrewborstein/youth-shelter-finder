@@ -32,7 +32,7 @@
     <th>Map</th>
   </tr>
   <% @shelters.each do |shelter| %>
-    <tr id="<%= shelter_name_id(shelter.name) %>">
+    <tr id="<%= shelter.id %>">
       <td><div>
         <a href="#" tabindex="0" class="label label-<%= availability_popover_class(shelter) %>" data-trigger="focus" data-toggle="popover" data-placement="top" title="<%= availability_popover_title(shelter) %>" data-content="<%= availability_popover_content(shelter) %>"><%= free_beds(shelter) %></a>
         <%= link_to shelter.name, shelter %>
@@ -42,7 +42,7 @@
       <td><div><%= shelter.phone %></div></td>
       <td><div><%= shelter.gender %></div></td>
       <td><div><span class="distance">Loading...</span></div></td>
-      <td><div class="hidden-xs"><a class="view-on-map" onclick="showMarker()" data-info="" data-marker="">View</a></div></td>
+      <td><div class="hidden-xs"><a class="view-on-map" onclick="showMarker(<%= shelter.id %>)" data-info="" data-marker="">View</a></div></td>
     </tr>
   <% end %>
 

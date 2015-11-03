@@ -39,7 +39,7 @@ function shelters() {
 };
 
 
-// Set global variable array for use in showMarker() function
+// Set global variable array for use in various functions
 var allInfoArray    = [];
 var allInfoObject   = {};
 var bounds          = null;
@@ -104,8 +104,8 @@ function initialize() {
 
         // Print the distances to table
         for (i = 0; i < shelters.length; i++) {
-          distance = getDistance(i);
-          printDistance(distance, shelters[i].name);
+          distance = getDistance(shelters[i].id);
+          printDistance(distance, shelters[i].name, shelters[i].id);
         }
 
         // Activate the 'Find Closest' button
@@ -171,23 +171,11 @@ function initialize() {
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
   bounds = new google.maps.LatLngBounds ();
 
-  console.log("'View' buttons will trigger markers based on the following order:")
-
   // Loop through locations...
   for (i = 0; i < shelters.length; i++) {
 
-    // Create 'View on Map' links
-    nameId = '#'+shelters[i].name                       // Get shelters name and prepended '#'...
-      .toLowerCase()                                    // ... make lowercase,
-      .replace('\'', '')                                // ... remove apostrophes,
-      .replace(/\s+/g, '')                              // ... remove spaces,
-    nameIdMap = nameId+' .view-on-map';                 // ... add 'view-on-map' class.
-    nameIdDist = nameId+' .distance';                   // ... add 'distance' class.
-    $(nameIdMap).attr('onclick', "showMarker("+i+")");  // Find div with that ID, add 'onclick' attribute for corresponding marker
-    nameIdDistances.push(nameIdDist);
-
     // Geocode function
-    function codeAddress(i) {
+    function codeAddress() {
 
       // Create variables to populate infoWindow
       var name    = shelters[i].name,
@@ -199,6 +187,8 @@ function initialize() {
                     '<p>'+addr+'<br>'+
                     phone+'</p>'
 
+      var id    = shelters[i].id
+
       // Add infoWindow contents to array, so we can add distances to them after they've been geocoded
       allInfoArray.push(allInfo);
       allInfoObject[name] = allInfo;
@@ -208,20 +198,20 @@ function initialize() {
 
         if (status == google.maps.GeocoderStatus.OK) {
 
+          // Create a map marker
           var marker = new google.maps.Marker({
               map:        map,
               position:   results[0].geometry.location,
               animation:  google.maps.Animation.DROP,
           });
 
-          gmarkers.push(marker); // Add markers to array, to use for showMarker() function
-          console.log(i)
+          gmarkers[id] = marker; // Add markers to array, to use for showMarker() function
 
           // Create latitude and longitude arrays, for panning map inside showMarker() function
           var lat = marker.getPosition().lat();
           var lng = marker.getPosition().lng();
-          latArray.push(lat)
-          lngArray.push(lng)
+          latArray[id] = lat
+          lngArray[id] = lng
 
           // Create listener for marker click events
           google.maps.event.addListener (marker, 'click', (function (marker, i) {
@@ -248,7 +238,7 @@ function initialize() {
     }
 
     // Code the address for this shelter
-    codeAddress(i);
+    codeAddress();
     }
 
   }
@@ -271,8 +261,8 @@ function showMarker(id) {
 function getDistance(id) {
   var latLng = new google.maps.LatLng(latArray[id], lngArray[id]); // Get lat/lng of marker
   var dist = google.maps.geometry.spherical.computeDistanceBetween(userLocation, latLng);
-  function getMiles(i) {
-    var conversion = i*0.000621371192
+  function getMiles(dist) {
+    var conversion = dist*0.000621371192
     var twoDecimal = parseFloat(conversion).toFixed(2);
     return twoDecimal;
   }
@@ -282,18 +272,16 @@ function getDistance(id) {
 }
 
 // Print the calculated distances
-function printDistance(distance, name) {
+function printDistance(distance, name, id) {
+  // If distance isn't calculated properly, don't print `NaN`
   if (isNaN(distance)) {
     console.log('Distance not calculated properly, please refresh.');
-    var distanceTable = '';
-    var distanceInfoWindow = ''
+    var distance = '';
   } else {
-    var distanceTable = distance + ' miles away'
-    var distanceInfoWindow = ' <span>'+distance + ' miles away</span>'
+    var distance = distance + ' miles away'
   }
-  $(nameIdDistances[i]).text(distanceTable);  // Find corresponding div inside table and print distance
-  allInfoArray[i] += distanceInfoWindow       // Append distances to infowindows array
-  allInfoObject[name] += distanceInfoWindow   // Append distances to infowindows object
+  $('#'+id+' .distance').text(distance);              // Find corresponding div inside table and print distance
+  allInfoObject[name] += '<span>'+distance+'<span>'   // Append distances to infowindows object
 }
 
 // Center the map around the current user's position
