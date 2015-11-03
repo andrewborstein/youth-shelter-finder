@@ -318,5 +318,8 @@ $(document).ready(function() {
   $(function () {
     $('[data-toggle="popover"]').popover({ trigger: "hover", viewport: {'selector' : 'body', "padding": 5 } })
   });
+  if (Modernizr.touch) {
+    $( "body" ).addClass( "touch" );
+  }
 });
 

@@ -37,7 +37,7 @@ gem 'bootstrap-sass'
 gem 'devise'
 gem "paperclip"
 gem 'aws-sdk'
-gem 'masonry-rails'
+gem 'modernizr-rails'
 gem 'font-awesome-rails'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
@@ -61,8 +61,8 @@ group :development, :test do
 end
 
 group :production do
-  
+
   gem 'pg'
   gem 'rails_12factor'
-  
+
 end

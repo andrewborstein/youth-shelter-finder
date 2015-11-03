@@ -6,7 +6,6 @@
 
 body {
   font-family: 'Open Sans';
-  cursor: pointer
 }
 a {
   cursor: pointer;
@@ -68,6 +67,9 @@ td a.label {
   min-width: 25px;
   font-size: 12px;
   margin-right: 5px;
+}
+.touch {
+  cursor: pointer
 }
 /* your custom CSS \*/
   @-moz-keyframes pulsate {
