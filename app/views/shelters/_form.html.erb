@@ -43,7 +43,7 @@
       <div class="col-sm-offset-2 col-sm-10">
         <%= f.submit 'Submit', class: 'btn btn-primary' %>
         <% if user_signed_in? && (params[:action] == 'new') %>
-          <%= link_to "Cancel", shelters_path, class: 'btn btn-default', 'data-no-turbolink' => 'true'%>
+          <%= link_to "Cancel", shelters_path, class: 'btn btn-default' %>
         <% else %>
           <%= link_to "Cancel", shelter_path(@shelter), class: 'btn btn-default'%>
         <% end %>

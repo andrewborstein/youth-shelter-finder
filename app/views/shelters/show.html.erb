@@ -14,8 +14,8 @@
 <p><%= gmap([@shelter]) %></p>
 
 <p>
-  <%= link_to "Back to Shelters", shelters_path, class: 'btn btn-primary', 'data-no-turbolink' => 'true' %>
   <% if current_user.admin || current_user.owner %>
     <%= link_to "Edit", edit_shelter_path, class: 'btn btn-default'%>
+  <%= link_to "Back to Shelters", shelters_path, class: 'btn btn-primary' %>
   <% end %>
 </p>
