@@ -20,14 +20,10 @@ module ShelterHelper
     if shelter.free_bed.nil?
       "We don't have any information about current bed availability."
     else
-      if shelter.free_bed > 9
-        "There are <%= shelter.free_bed %> beds currently available."
-      elsif shelter.free_bed < 5 && shelter.free_bed > 1
-        "There are only <%= shelter.free_bed %> beds currently available."
-      elsif shelter.free_bed < 2
-        "There is only <%= shelter.free_bed %> bed currently available."
+      if shelter.free_bed == 1
+        "There is #{shelter.free_bed} bed currently available."
       else
-        "There are <%= shelter.free_bed %> beds currently available."
+        "There are #{shelter.free_bed} beds currently available."
       end
     end
   end
