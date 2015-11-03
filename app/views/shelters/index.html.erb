@@ -34,7 +34,7 @@
   <% @shelters.each do |shelter| %>
     <tr id="<%= shelter_name_id(shelter.name) %>">
       <td><div>
-        <span class="label label-<%= availability_popover_class(shelter) %>" data-toggle="popover" data-placement="top" title="<%= availability_popover_title(shelter) %>" data-content="<%= availability_popover_content(shelter) %>"><%= free_beds(shelter) %></span>
+        <a href="#" tabindex="0" class="label label-<%= availability_popover_class(shelter) %>" data-trigger="focus" data-toggle="popover" data-placement="top" title="<%= availability_popover_title(shelter) %>" data-content="<%= availability_popover_content(shelter) %>"><%= free_beds(shelter) %></a>
         <%= link_to shelter.name, shelter %>
         </div>
       </td>
